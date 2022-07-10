@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import user.admin.libraian.Entity.book;
 import user.admin.libraian.Service.bookService;
 
+import java.util.List;
+
 @RestController
 public class bookController {
     @Autowired
@@ -14,6 +16,11 @@ public class bookController {
     @GetMapping("/getBook/{id}")
     public book getBook(@PathVariable int id){
     return service.getBook(id);
+    }
+
+    @GetMapping("/{name}")
+    public List<book> getBookByName(@PathVariable String name){
+        return service.getAll(name);
     }
 
     // post mapping

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import user.admin.libraian.Entity.book;
 import user.admin.libraian.Repository.bookRepo;
 
+import java.util.List;
+
 @Service
 public class bookService {
     @Autowired
@@ -37,5 +39,28 @@ public class bookService {
             return "no book with id "+id;
         repo.deleteById(id);
         return "deleted";
+    }
+
+    // search by book name or author
+    public List<book> getAll(String name){
+        return repo.findAllCustom(name);
+    }
+
+    // issue book
+    public String issueBook(book obj){
+        int copies = obj.getNumber_of_copies();
+        if(copies>0){
+            obj.setNumber_of_copies(copies-1);
+            // need to add book issue data in user table
+            return "book issued successfully";
+        }
+        return "no copies left";
+    }
+
+    public String returnBook(book obj){
+        int copies = obj.getNumber_of_copies();
+        obj.setNumber_of_copies(copies+1);
+        // need to add book return data in user table
+        return "book returned successfully";
     }
 }

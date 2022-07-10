@@ -12,4 +12,5 @@ public class book {
     int bookId;
     String bookName;
     String authorName;
+    int number_of_copies;
 }
