@@ -1,8 +1,8 @@
-package com.lms.user.Controller;
+package com.lms.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lms.user.Entity.user_table;
-import com.lms.user.Service.userService;
+import com.lms.user.entity.User;
+import com.lms.user.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +19,23 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = {userController.class})
+@ContextConfiguration(classes = {UserController.class})
 @ExtendWith(SpringExtension.class)
 public class ControllerTest {
     @Autowired
-    userController controllerObj;
+    UserController controllerObj;
 
     @MockBean
-    userService service;
+    UserServiceImpl service;
 
     // get user testing
     @Test
     void getUserTesting() throws Exception{
-        user_table user = new user_table();
+        User user = new User();
         user.setFirstName("Yash");
         user.setLastName("Bansal");
         user.setEmail("yashbansal@gmail.com");
-        user.setRegistrationNumber(12345);
+        user.setId(12345);
         //user.setPassword();
         when(service.getUser(anyInt())).thenReturn(user);
         // mocking url hit
@@ -43,21 +43,21 @@ public class ControllerTest {
         MockMvcBuilders.standaloneSetup(controllerObj).build().perform(requestBuilder).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
-
+   // hamcrest --> for testing
     @Test
     void addUser() throws Exception{
-        user_table user = new user_table();
+        User user = new User();
         user.setFirstName("Yash");
         user.setLastName("Bansal");
         user.setEmail("yashbansal@gmail.com");
-        user.setRegistrationNumber(12345);
-        when(service.addUser((user_table) any())).thenReturn(user);
+        user.setId(12345);
+        when(service.addUser((User) any())).thenReturn(user);
 
-        user_table user1 = new user_table();
+        User user1 = new User();
         user1.setFirstName("Yash");
         user1.setLastName("Bansal");
         user1.setEmail("yashbansal@gmail.com");
-        user1.setRegistrationNumber(12345);
+        user1.setId(12345);
         String content = (new ObjectMapper()).writeValueAsString(user1);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/newUser")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -84,18 +84,18 @@ public class ControllerTest {
 
     @Test
     void testUpdateUser() throws Exception{
-        user_table user = new user_table();
+        User user = new User();
         user.setFirstName("Yash");
         user.setLastName("Bansal");
         user.setEmail("yashbansal@gmail.com");
-        user.setRegistrationNumber(12345);
-        when(service.updateUser((user_table) any())).thenReturn(user);
+        user.setId(12345);
+        when(service.updateUser((User) any())).thenReturn(user);
 
-        user_table user1 = new user_table();
+        User user1 = new User();
         user1.setFirstName("Yash");
         user1.setLastName("Bansal");
         user1.setEmail("yashbansal@gmail.com");
-        user1.setRegistrationNumber(12345);
+        user1.setId(12345);
         String content = (new ObjectMapper()).writeValueAsString(user1);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/update")
                 .contentType(MediaType.APPLICATION_JSON)
